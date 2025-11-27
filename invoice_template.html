@@ -4,6 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kostennote PDF – korrigierter Seitenumbruch</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mukta+Mahee:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Mukta Mahee"', 'Arial', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @page {
@@ -21,7 +37,7 @@
            ================================ */
         .page {
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            font-family: 'Mukta Mahee', Arial, sans-serif;;
             font-size: 12pt;
             line-height: 1.2;
             color: #000;
@@ -39,7 +55,7 @@
         /* Simulierte Druckränder */
         .content {
             flex: 1;
-            padding: 4.5cm 2.5cm 2.5cm 2.5cm;
+            padding: 5.5cm 2.5cm 2.5cm 2.5cm;
             display: flex;
             flex-direction: column;
         }
@@ -58,7 +74,7 @@
         }
 
         .data-key { max-width: 70%; }
-        .data-value { font-weight: bold; text-align: right; }
+        .data-value { text-align: right; }
 
         .line-seperator {
             border-bottom: 1px solid black;
@@ -80,24 +96,20 @@
 </head>
 <body>
 
-<!-- ==============================
-     SEITE 1
-================================ -->
 <div class="page">
     <div class="content">
 
-        <header style="font-size: 10pt; margin-bottom: 0.5rem;">
+        <header style="font-size: 8pt; margin-bottom: 0.5rem;">
             {{senderName}} · {{senderStreet}} · {{senderZipCity}}
         </header>
 
-        <section class="tight-spacing">
-            <p>Frau und Herrn</p>
+        <section class="tight-spacing mb-8">
             <p>{{empfaengerAnrede}} {{name}}</p>
             <p>{{strasse}}</p>
             <p>{{plz}} {{ort}}</p>
         </section>
 
-        <section class="mt-6">
+        <section class="mt-6 tight-spacing">
             <div class="flex-row-data">
                 <span class="data-key">Karlsruhe, den {{datum}}</span>
             </div>
@@ -106,16 +118,15 @@
             <div class="flex-row-data">Leistungszeit: {{leistungszeit}}</div>
         </section>
 
-        <!-- ALLES BIS SUMMA MUSS AUF SEITE 1 BLEIBEN -->
         <div class="keep-together">
 
-            <section class="text-center mt-6">
+            <section class="text-center mt-16">
                 <h1 style="font-size:18pt; font-weight:bold;">Kostennote</h1>
                 <p class="mt-3">In Sachen</p>
-                <p class="font-bold mt-2">{{mandant}}<br>./.<br>{{gegner}}</p>
+                <p class="font-bold mt-3">{{partei1}}<br>./.<br>{{partei2}}</p>
             </section>
 
-            <section class="mt-6">
+            <section class="mt-12">
                 <div class="flex-row-data">
                     <span>Gesamtstreitwert:</span>
                     <span class="data-value">{{formatCurrency gesamtStreitwert}} EUR</span>
@@ -135,7 +146,7 @@
                     <span>
                         Gesamtrechnungsbetrag<br>
                         <span style="font-size:10pt;">(2,3 Verfahrensgebühr Nr. 3508 VV RVG)</span><br>
-                        <strong>zzgl. Auslagenpauschale:</strong>
+                        zzgl. Auslagenpauschale:
                     </span>
                     <span class="data-value">{{formatCurrency gesamtRechnungsbetrag}} EUR</span>
                 </div>
@@ -143,7 +154,7 @@
             </section>
 
             <section class="mt-4">
-                <p class="font-bold">Einzelrechnungsbetrag:</p>
+                <p>Einzelrechnungsbetrag:</p>
                 <div class="flex-row-data">
                     <span>Prozentualer Anteil</span>
                     <span class="data-value">{{formatCurrency proportionalerBetrag}} EUR</span>
@@ -173,24 +184,14 @@
 
     </div>
 
-    <!-- <div class="footer">
-        Seite 1 von 2
-    </div> -->
-</div>
+    </div>
 
-<!-- ==============================
-     SEITE 2
-================================ -->
 <div class="page">
     <div class="content">
-        <!-- <header style="font-size:10pt; margin-bottom:1rem;">
-            {{senderName}} · {{senderStreet}} · {{senderZipCity}}
-        </header> -->
-
         <section>
             <p>Bitte überweisen Sie den Betrag auf unser Konto bei der Commerzbank AG,<br>
             IBAN: {{iban}}</p>
-            <p style="font-size:10pt; color:red;">Bitte beachten Sie die neue Bankverbindung</p>
+            <p style="font-size:10pt; color:red;">Bitte beachten Sie die neue Bankverbindung.</p>
         </section>
 
         <section style="margin-top:5rem;">

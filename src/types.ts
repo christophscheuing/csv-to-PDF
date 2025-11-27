@@ -55,7 +55,8 @@ export interface CaseDetails {
     gzNumber: string;
     leistungszeit: string;
     mandant: string;
-    gegner: string;
+    partei1: string;
+    partei2: string;
 }
 
 /**

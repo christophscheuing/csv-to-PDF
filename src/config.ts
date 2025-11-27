@@ -1,4 +1,4 @@
-import { GeneratorConfig, SenderInfo } from './types.js';
+import { CaseDetails, GeneratorConfig, SenderInfo } from './types.js';
 
 /**
  * Main configuration for the invoice generator
@@ -17,12 +17,23 @@ export const config: GeneratorConfig = {
  * Adjust these values according to your law firm
  */
 export const senderInfo: SenderInfo = {
-    senderName: 'Rechtsanwalt Max Mustermann',
-    senderStreet: 'Musterstraße 1',
+    senderName: 'Siegmann | Höger',
+    senderStreet: 'Hübschstraße 21',
     senderZipCity: '76131 Karlsruhe',
-    ustId: 'DE123456789',
-    iban: 'DE89 3704 0044 0532 0130 00',
-    unterschrift: 'Max Mustermann'
+    ustId: 'DE455775429',
+    iban: 'DE54 6604 0018 0366 0560 00',
+    unterschrift: 'Prof. Dr. Matthias Siegmann'
+};
+
+/**
+ * Sender information - centralized configuration
+ * Adjust these values according to your law firm
+ */
+export const caseDetails: Partial<CaseDetails> = {
+    leistungszeit: '06.03.-25.11.2025',
+    gzNumber: 'SH 072/25',
+    partei1: 'Dipl.-Kfm. Ebert u.a.',
+    partei2: 'Dr. Braun u.a.'
 };
 
 /**

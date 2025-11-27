@@ -7,7 +7,7 @@ import {
     InvoiceCalculations,
     DisputeValue
 } from './types.js';
-import { senderInfo, defaultCalculationValues, config } from './config.js';
+import { senderInfo, defaultCalculationValues, config, caseDetails } from './config.js';
 import { parseGermanNumber, formatGermanDate, buildRecipientName, buildAnrede } from './csvParser.js';
 
 /**
@@ -166,10 +166,11 @@ export const calculateInvoiceData = (csvData: CSVRawData): InvoiceData => {
         // Case details
         rechnungsId: csvData['Rechnungsnummer'],
         datum: formatGermanDate(),
-        gzNumber: csvData['Az. TILP'],
-        leistungszeit: formatGermanDate(), // Adjust if you have a specific service period
+        gzNumber: caseDetails.gzNumber || '', // Adjust if you have a specific GZ number    
+        leistungszeit: caseDetails.leistungszeit || '', // Adjust if you have a specific service period
         mandant: buildRecipientName(csvData), // Using recipient as client
-        gegner: 'N/A', // Add if available in your data
+        partei1: caseDetails.partei1 || '', // Add if available in your data
+        partei2: caseDetails.partei2 || '', // Add if available in your data
         
         // Dispute values
         ...disputeValue,
