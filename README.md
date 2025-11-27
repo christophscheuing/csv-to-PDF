@@ -112,12 +112,12 @@ const calculateFees = (einzelStreitwert: number): Fees => {
 Das HTML-Template (`invoice_template.html`) nutzt Handlebars-Syntax:
 
 ```html
-<p>Rechnungsnummer: {{rechnungsId}}</p>
+<p>Rechnungsnummer: {{rechnungsNummer}}</p>
 <p>Betrag: {{formatCurrency gesamtbetragBrutto}} EUR</p>
 ```
 
 Verfügbare Variablen:
-- `{{rechnungsId}}` - Rechnungsnummer
+- `{{rechnungsNummer}}` - Rechnungsnummer
 - `{{name}}` - Empfängername
 - `{{datum}}` - Rechnungsdatum
 - `{{gesamtbetragBrutto}}` - Bruttobetrag

@@ -19,14 +19,10 @@ import { parseGermanNumber, formatGermanDate, buildRecipientName, buildAnrede } 
  */
 const calculateDisputeValues = (streitwertKlage: number): DisputeValue => {
     // Example calculation - adjust based on your legal requirements
-    const gesamtStreitwert = streitwertKlage;
     const einzelStreitwert = streitwertKlage; // Can be different in some cases
-    const prozentualerAnteil = 100; // Can be calculated differently if needed
     
     return {
-        gesamtStreitwert,
         einzelStreitwert,
-        prozentualerAnteil
     };
 };
 
@@ -37,12 +33,16 @@ const calculateDisputeValues = (streitwertKlage: number): DisputeValue => {
  * @param einzelStreitwert - Individual dispute value
  * @returns Calculated fees
  */
-const calculateFees = (einzelStreitwert: number): Fees => {
+const calculateFees = (gesamtStreitwert: number, einzelStreitwert: number): Fees => {
     // TODO: Implement actual RVG fee calculation based on Streitwert
     // This is just using the default values for now
     // You would typically use RVG tables or formulas here
     
+    const faktor = Math.ceil((gesamtStreitwert - 500000) / 50000);
+    const zweiKommaDreiGebuehr = (3539 + (faktor * 165)) * 2.3;
+
     return {
+        zweiKommaDreiGebuehr: parseFloat(zweiKommaDreiGebuehr.toFixed(2)),
         verfahrensgebuehr: defaultCalculationValues.verfahrensgebuehr,
         terminsgebuehr: defaultCalculationValues.terminsgebuehr,
         einigungsgebuehr: defaultCalculationValues.einigungsgebuehr
@@ -58,11 +58,11 @@ const calculateFees = (einzelStreitwert: number): Fees => {
 const calculateExpenses = (einzelStreitwert: number): Expenses => {
     // Erhöhungsgebühr: 0,3 der Verfahrensgebühr
     const verfahrensgebuehr = defaultCalculationValues.verfahrensgebuehr;
-    const erhoehungsgebuehr = verfahrensgebuehr * 0.3;
+    const erhoehungsgebuehrOld = verfahrensgebuehr * 0.3;
     
     return {
         pauschale: defaultCalculationValues.auslagenpauschale,
-        erhoehungsgebuehr: parseFloat(erhoehungsgebuehr.toFixed(2))
+        erhoehungsgebuehrOld: parseFloat(erhoehungsgebuehrOld.toFixed(2))
     };
 };
 
@@ -96,19 +96,19 @@ const performInvoiceCalculations = (
     disputeValue: DisputeValue
 ): InvoiceCalculations => {
     // Calculate intermediate sums
-    const summe1 = gebuehren.verfahrensgebuehr + gebuehren.terminsgebuehr + gebuehren.einigungsgebuehr;
-    const summe2 = auslagen.pauschale + auslagen.erhoehungsgebuehr;
+    const summe1 = gebuehren.zweiKommaDreiGebuehr; // gebuehren.verfahrensgebuehr + gebuehren.terminsgebuehr + gebuehren.einigungsgebuehr;
+    const summe2 = auslagen.pauschale + auslagen.erhoehungsgebuehrOld;
     const summe3 = barauslagen.kopien + barauslagen.telekommunikation + barauslagen.gerichtskosten;
     
     // Calculate total billing amount from total dispute value
     // This is the base amount before proportional calculation
-    const gesamtRechnungsbetrag = summe1 + auslagen.pauschale;
+    const gesamtRechnungsbetragOld = summe1 + auslagen.pauschale;
     
     // Calculate proportional amount based on percentage
-    const proportionalerBetrag = (gesamtRechnungsbetrag * disputeValue.prozentualerAnteil) / 100;
+    const proportionalerBetrag = (gesamtRechnungsbetragOld); // * disputeValue.anteilAmGesamtStreitwert);
     
     // Calculate net total
-    const gesamtbetragNetto = proportionalerBetrag + auslagen.erhoehungsgebuehr;
+    const gesamtbetragNetto = proportionalerBetrag + auslagen.erhoehungsgebuehrOld;
     
     // Calculate VAT
     const mehrwertsteuer = gesamtbetragNetto * config.taxRate;
@@ -117,9 +117,9 @@ const performInvoiceCalculations = (
     const gesamtbetragBrutto = gesamtbetragNetto + mehrwertsteuer;
     
     return {
-        gesamtRechnungsbetrag: parseFloat(gesamtRechnungsbetrag.toFixed(2)),
+        gesamtRechnungsbetragOld: parseFloat(gesamtRechnungsbetragOld.toFixed(2)),
         proportionalerBetrag: parseFloat(proportionalerBetrag.toFixed(2)),
-        erhoehungsgebuehr: auslagen.erhoehungsgebuehr,
+        erhoehungsgebuehrOld: auslagen.erhoehungsgebuehrOld,
         summe1: parseFloat(summe1.toFixed(2)),
         summe2: parseFloat(summe2.toFixed(2)),
         summe3: parseFloat(summe3.toFixed(2)),
@@ -138,12 +138,21 @@ const performInvoiceCalculations = (
 export const calculateInvoiceData = (csvData: CSVRawData): InvoiceData => {
     // Parse the dispute value from CSV
     const streitwertKlage = parseGermanNumber(csvData['Streitwert Klage']);
+    const gesamtStreitwert = parseGermanNumber(csvData['Gesamtstreitwert']);
+    const gesamtRechnungsbetrag = parseGermanNumber(csvData['Gesamtrechnungsbetrag']);
+    const anteil = parseGermanNumber(csvData['Anteil']);
+    const einzelRechnungsbetrag = parseGermanNumber(csvData['Einzelrechnungsbetrag']);
+    const erhoehungsgebuehr = parseGermanNumber(csvData['Erhöhungsgebühr']);
+    const zwischensumme = parseGermanNumber(csvData['Zwischensumme']);
+    const umsatzsteuer = parseGermanNumber(csvData['Umsatzsteuer']);
+    const summa = parseGermanNumber(csvData['Summa']);
+
     
     // Calculate dispute values
     const disputeValue = calculateDisputeValues(streitwertKlage);
     
     // Calculate fees, expenses, and cash expenses
-    const gebuehren = calculateFees(disputeValue.einzelStreitwert);
+    const gebuehren = calculateFees(disputeValue.einzelStreitwert, disputeValue.einzelStreitwert);
     const auslagen = calculateExpenses(disputeValue.einzelStreitwert);
     const barauslagen = getCashExpenses();
     
@@ -162,9 +171,20 @@ export const calculateInvoiceData = (csvData: CSVRawData): InvoiceData => {
         plz: csvData.PLZ,
         ort: csvData.Ort,
         land: csvData.Land,
+
+        // Data calculated by Excel
+        gesamtStreitwert: gesamtStreitwert,
+        gesamtRechnungsbetrag: gesamtRechnungsbetrag,
+        anteil: anteil,
+        einzelRechnungsbetrag: einzelRechnungsbetrag,
+        erhoehungsgebuehr: erhoehungsgebuehr,
+        zwischensumme: zwischensumme,
+        umsatzsteuer: umsatzsteuer,
+        summa: summa,
+            
         
         // Case details
-        rechnungsId: csvData['Rechnungsnummer'],
+        rechnungsNummer: csvData['Rechnungsnummer'],
         datum: formatGermanDate(),
         gzNumber: caseDetails.gzNumber || '', // Adjust if you have a specific GZ number    
         leistungszeit: caseDetails.leistungszeit || '', // Adjust if you have a specific service period
@@ -195,7 +215,7 @@ export const calculateInvoiceData = (csvData: CSVRawData): InvoiceData => {
  */
 export const validateInvoiceData = (invoiceData: InvoiceData): boolean => {
     const requiredFields = [
-        'rechnungsId', 'name', 'strasse', 'plz', 'ort',
+        'name', 'strasse', 'plz', 'ort',
         'gesamtbetragBrutto', 'datum'
     ];
     

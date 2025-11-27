@@ -114,7 +114,7 @@
                 <span class="data-key">Karlsruhe, den {{datum}}</span>
             </div>
             <div class="flex-row-data">Gz.: {{gzNumber}}</div>
-            <div class="flex-row-data">UST-ID: {{ustId}}; ReNr.: {{rechnungsId}}</div>
+            <div class="flex-row-data">UST-ID: {{ustId}}; ReNr.: {{rechnungsNummer}}</div>
             <div class="flex-row-data">Leistungszeit: {{leistungszeit}}</div>
         </section>
 
@@ -137,7 +137,7 @@
                 </div>
                 <div class="flex-row-data">
                     <span>Prozentualer Anteil:</span>
-                    <span class="data-value">{{formatCurrency prozentualerAnteil}} %</span>
+                    <span class="data-value">{{formatPercent anteil}} %</span>
                 </div>
             </section>
 
@@ -145,7 +145,7 @@
                 <div class="flex-row-data">
                     <span>
                         Gesamtrechnungsbetrag<br>
-                        <span style="font-size:10pt;">(2,3 Verfahrensgebühr Nr. 3508 VV RVG)</span><br>
+                        <span>(2,3 Verfahrensgebühr Nr. 3508 VV RVG)</span><br>
                         zzgl. Auslagenpauschale:
                     </span>
                     <span class="data-value">{{formatCurrency gesamtRechnungsbetrag}} EUR</span>
@@ -156,27 +156,35 @@
             <section class="mt-4">
                 <p>Einzelrechnungsbetrag:</p>
                 <div class="flex-row-data">
-                    <span>Prozentualer Anteil</span>
-                    <span class="data-value">{{formatCurrency proportionalerBetrag}} EUR</span>
+                    <span>Prozentualer Anteil am Gesamtrechnungsbetrag<br>
+                        <span>({{formatPercent anteil}} % aus {{formatCurrency gesamtRechnungsbetrag}} EUR)</span>
+                    </span>
+                    <span class="data-value">{{formatCurrency einzelRechnungsbetrag}} EUR</span>
                 </div>
+                {{#if erhoehungsgebuehr}}
                 <div class="flex-row-data">
-                    <span>0,3-Erhöhungsgebühr Nr. 1008 VV RVG</span>
+                    <span>0,3-Erhöhungsgebühr Nr. 1008 VV RVG<br>
+                        <span>aus {{formatCurrency einzelStreitwert}} EUR</span>
+                    </span>
                     <span class="data-value">{{formatCurrency erhoehungsgebuehr}} EUR</span>
                 </div>
+                {{/if}}
             </section>
 
-            <section class="mt-6">
+            <section class="mt-4">
+                {{#if erhoehungsgebuehr}}
                 <div class="flex-row-data">
                     <span>Zwischensumme:</span>
-                    <span class="data-value">{{formatCurrency gesamtbetragNetto}} EUR</span>
+                    <span class="data-value">{{formatCurrency zwischensumme}} EUR</span>
                 </div>
+                {{/if}}
                 <div class="flex-row-data">
-                    <span>USt 19%:</span>
-                    <span class="data-value">{{formatCurrency mehrwertsteuer}} EUR</span>
+                    <span>Umsatzsteuer:</span>
+                    <span class="data-value">{{formatCurrency umsatzsteuer}} EUR</span>
                 </div>
                 <div class="flex-row-data font-bold">
                     <span>Summa:</span>
-                    <span class="data-value">{{formatCurrency gesamtbetragBrutto}} EUR</span>
+                    <span class="data-value">{{formatCurrency summa}} EUR</span>
                 </div>
             </section>
 
@@ -190,7 +198,7 @@
     <div class="content">
         <section>
             <p>Bitte überweisen Sie den Betrag auf unser Konto bei der Commerzbank AG,<br>
-            IBAN: {{iban}}</p>
+            IBAN: {{iban}}.</p>
             <p style="font-size:10pt; color:red;">Bitte beachten Sie die neue Bankverbindung.</p>
         </section>
 

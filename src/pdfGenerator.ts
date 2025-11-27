@@ -20,6 +20,17 @@ export const registerHandlebarsHelpers = (): void => {
             maximumFractionDigits: 2 
         }).format(amount);
     });
+
+    /**
+     * Formats a number as a percent indication with 6 digits (e.g., 1234.56 -> 1.234,56)
+     */
+    Handlebars.registerHelper('formatPercent', (amount: any): string => {
+        if (typeof amount !== 'number') return String(amount);
+        return new Intl.NumberFormat('de-DE', { 
+            // minimumFractionDigits: 2, 
+            maximumFractionDigits: 6 
+        }).format(amount);
+    });
     
     /**
      * Conditional helper for template logic
@@ -53,7 +64,7 @@ export const generatePDF = async (
     let browser;
     
     try {
-        console.log(`  → Compiling HTML template for invoice ${invoiceData.rechnungsId}...`);
+        console.log(`  → Compiling HTML template for invoice ${invoiceData.rechnungsNummer}...`);
         
         // Compile Handlebars template
         const template = Handlebars.compile(htmlContent);
@@ -90,7 +101,7 @@ export const generatePDF = async (
         return pdfBuffer;
         
     } catch (error) {
-        console.error(`  ✗ Error during PDF generation for ID ${invoiceData.rechnungsId}:`, error);
+        console.error(`  ✗ Error during PDF generation for ID ${invoiceData.rechnungsNummer}:`, error);
         if (browser) await browser.close();
         throw error;
     }

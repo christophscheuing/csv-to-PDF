@@ -70,7 +70,7 @@ const processInvoice = async (
     htmlContent: string,
     shouldStamp: boolean
 ): Promise<void> => {
-    console.log(`\n┌─ Processing Invoice: ${invoice.rechnungsId} ────────────────`);
+    console.log(`\n┌─ Processing Invoice: ${invoice.rechnungsNummer} ────────────────`);
     
     try {
         // Validate invoice data
@@ -81,12 +81,12 @@ const processInvoice = async (
         const generatedPdfBuffer = await generatePDF(invoice, htmlContent);
         
         // Save final PDF (with optional stamping)
-        const outputPath = await savePDF(generatedPdfBuffer, invoice.rechnungsId, shouldStamp);
+        const outputPath = await savePDF(generatedPdfBuffer, invoice.rechnungsNummer, shouldStamp);
         
         console.log(`└─ ✓ Complete: ${outputPath}\n`);
         
     } catch (error) {
-        console.error(`└─ ✗ Failed to process invoice ${invoice.rechnungsId}:`, error);
+        console.error(`└─ ✗ Failed to process invoice ${invoice.rechnungsNummer}:`, error);
         throw error;
     }
 };
@@ -144,12 +144,12 @@ const main = async (): Promise<void> => {
             invoicesToProcess = invoices;
             console.log(`═══ Processing ALL ${invoices.length} invoices ═══\n`);
         } else if (options.targetId) {
-            invoicesToProcess = invoices.filter(i => i.rechnungsId === options.targetId);
+            invoicesToProcess = invoices.filter(i => i.rechnungsNummer === options.targetId);
             
             if (invoicesToProcess.length === 0) {
                 console.error(`\n✗ ERROR: No invoice found with ID "${options.targetId}"\n`);
                 console.log('Available invoice IDs:');
-                invoices.forEach(inv => console.log(`  - ${inv.rechnungsId}`));
+                invoices.forEach(inv => console.log(`  - ${inv.rechnungsNummer}`));
                 console.log('');
                 process.exit(1);
             }
@@ -170,7 +170,7 @@ const main = async (): Promise<void> => {
                 successCount++;
             } catch (error) {
                 errorCount++;
-                console.error(`Failed to process invoice ${invoice.rechnungsId}`);
+                console.error(`Failed to process invoice ${invoice.rechnungsNummer}`);
             }
         }
         

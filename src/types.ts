@@ -19,6 +19,14 @@ export interface CSVRawData {
     'Ort': string;
     'Land': string;
     'Streitwert Klage': string;
+    'Gesamtstreitwert':	string;
+    'Gesamtrechnungsbetrag': string;
+    'Anteil': string;
+    'Einzelrechnungsbetrag': string;
+    'Erhöhungsgebühr': string;
+    'Zwischensumme': string;
+    'Umsatzsteuer': string;
+    'Summa': string;
     'Rechnungsnummer': string;
 }
 
@@ -50,7 +58,7 @@ export interface RecipientInfo {
  * Case details
  */
 export interface CaseDetails {
-    rechnungsId: string;
+    rechnungsNummer: string;
     datum: string;
     gzNumber: string;
     leistungszeit: string;
@@ -63,6 +71,7 @@ export interface CaseDetails {
  * Fee structure (Gebühren)
  */
 export interface Fees {
+    zweiKommaDreiGebuehr: number;
     verfahrensgebuehr: number;
     terminsgebuehr: number;
     einigungsgebuehr: number;
@@ -73,7 +82,7 @@ export interface Fees {
  */
 export interface Expenses {
     pauschale: number;
-    erhoehungsgebuehr: number;
+    erhoehungsgebuehrOld: number;
 }
 
 /**
@@ -89,24 +98,36 @@ export interface CashExpenses {
  * Dispute value calculations (Streitwertberechnungen)
  */
 export interface DisputeValue {
-    gesamtStreitwert: number;
     einzelStreitwert: number;
-    prozentualerAnteil: number;
 }
 
 /**
  * Invoice calculations
  */
 export interface InvoiceCalculations {
-    gesamtRechnungsbetrag: number;
+    gesamtRechnungsbetragOld: number;
     proportionalerBetrag: number;
-    erhoehungsgebuehr: number;
+    erhoehungsgebuehrOld: number;
     summe1: number;
     summe2: number;
     summe3: number;
     gesamtbetragNetto: number;
     mehrwertsteuer: number;
     gesamtbetragBrutto: number;
+}
+
+/**
+ * Data calculated by Excel
+ */
+export interface ExcelCalculatedData {
+    gesamtStreitwert: number;
+    gesamtRechnungsbetrag: number;
+    anteil: number;
+    einzelRechnungsbetrag: number;
+    erhoehungsgebuehr: number;
+    zwischensumme: number;
+    umsatzsteuer: number;
+    summa: number;
 }
 
 /**
@@ -117,10 +138,12 @@ export interface InvoiceData extends
     RecipientInfo, 
     CaseDetails, 
     DisputeValue, 
+    ExcelCalculatedData,
     InvoiceCalculations {
     gebuehren: Fees;
     auslagen: Expenses;
     barauslagen: CashExpenses;
+
 }
 
 /**
