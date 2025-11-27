@@ -3,315 +3,206 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kostennoten-Vorlage (Seite 1 & 2)</title>
-    <!-- Tailwind wird nur für die Flexbox-Utilities und Basis-Klassen verwendet. 
-         Die Schriftgrößen werden via PT/CSS überschrieben. -->
+    <title>Kostennote PDF – korrigierter Seitenumbruch</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Entfernt die externe Schriftart Mukta Mahee, um Ladefehler und Inkonsistenzen bei der PDF-Generierung zu vermeiden. -->
-
     <style>
-        /* PDF/Print-spezifische Einstellungen */
         @page {
             size: A4;
-            /* @page definiert die physikalischen Ränder des Papiers. */
-            /* Oben: 4.5cm (Platz für Briefkopf), Rest: 2.5cm */
-            margin: 4.5cm 2.5cm 2.5cm 2.5cm; 
+            margin: 0;
         }
 
-        /* Die Hauptseite/das Container-Element */
-        .document-page {
-            box-sizing: border-box;
-            /* Verwenden Sie eine sichere Kette. */
-            font-family: Arial, sans-serif;
-            /* SCHRIFTGRÖSSE AUF 12PT FIXIERT */
-            font-size: 12pt; 
-            line-height: 1.4; 
-            width: 100%; /* Passt sich dem durch @page definierten Inhalt an */
-            height: auto; 
-            padding: 0; 
+        html, body {
             margin: 0;
+            padding: 0;
+        }
+
+        /* ================================
+           GRUNDLAYOUT
+           ================================ */
+        .page {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            font-size: 12pt;
+            line-height: 1.2;
+            color: #000;
+            width: 210mm;
+            min-height: 297mm;
             display: flex;
             flex-direction: column;
-            color: #000;
+            page-break-after: always;
         }
 
-        /* Klasse für geringeren Zeilenabstand */
-        .tight-spacing p, .tight-spacing div, .tight-spacing span {
-            line-height: 1.1 !important;
+        .page:last-child {
+            page-break-after: auto;
         }
-        
-        /* Allgemeine Utility-Klassen (zusätzlich zu Tailwind) */
+
+        /* Simulierte Druckränder */
+        .content {
+            flex: 1;
+            padding: 4.5cm 2.5cm 2.5cm 2.5cm;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .footer {
+            font-size: 10pt;
+            text-align: right;
+            padding: 0 2.5cm 2cm 2.5cm;
+        }
+
         .flex-row-data {
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
-            margin-bottom: 0.5rem; /* Standardabstand für Datenzeilen */
+            margin-bottom: 0.3rem;
         }
+
         .data-key { max-width: 70%; }
-        .data-value { text-align: right; font-weight: bold; }
+        .data-value { font-weight: bold; text-align: right; }
+
         .line-seperator {
             border-bottom: 1px solid black;
-            height: 1px;
             margin: 5px 0;
         }
 
-        /* Footer/Seitenzahl Basis-Stile (Globale Definition) */
-        .page-footer {
-             display: block;
-             font-size: 10pt;
-             text-align: right; /* WICHTIG: Rechtsbündig, wie gewünscht */
-             padding: 0;
-        }
-        
-        /* Seitenzahl soll nur auf Seite 2 angezeigt werden */
-        #page1 .page-footer {
-            /* Wir lassen das display: none; hier, falls später doch wieder Text eingefügt wird. */
-            display: none;
+        .tight-spacing p,
+        .tight-spacing div,
+        .tight-spacing span {
+            line-height: 1.1 !important;
         }
 
-        /* ------------------------------------------- */
-        /* SPEZIFISCHE DRUCK-REGELN FÜR SEITEN-LAYOUT */
-        /* ------------------------------------------- */
-
-        @media print {
-            .document-page {
-                page-break-after: always;
-                /* Entfernen Sie jeglichen Padding, da @page die Ränder festlegt. */
-                padding: 0 !important; 
-            }
-            
-            /* Der Header-Inhalt (Absender) MUSS auf allen Seiten am oberen Rand des Inhaltsbereichs beginnen. */
-            .header-content {
-                /* Leichte negative Margins gleichen manchmal den automatischen Flow nach @page Margin aus */
-                margin-top: -1em; 
-            }
-
-            /* Das Element, das den Umbruch für Seite 2 erzwingt */
-            #pageBreak {
-                page-break-before: always;
-            }
-            
-            /* Footer/Seitenzahl Positionierung für den Druck */
-            .page-footer {
-                 position: fixed; 
-                 bottom: 2.5cm; /* Exakt an der Unterkante des Textbereichs (2.5cm Margin) */
-                 right: 2.5cm; /* Exakt an der rechten Kante des Textbereichs (2.5cm Margin) */
-                 left: auto; /* Wichtig, damit es von rechts positioniert wird */
-                 padding: 0; 
-            }
-            
-             /* Korrigiertes Verhalten der Tailwind-Klassen für Druck auf PT-Basis */
-            .text-xs { font-size: 10pt !important; }
-            .text-xl { font-size: 18pt !important; }
-            /* Die Klasse für 10pt im Text-Body */
-            .text-\[10pt\] { font-size: 10pt !important; }
-        }
-
-        /* ------------------------------------------- */
-        /* WEB-VORSCHAU (mit simulierten Rändern) */
-        /* ------------------------------------------- */
-        @media screen {
-            body { background-color: #f0f0f0; padding: 20px; }
-            .document-page {
-                background: white;
-                box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-                margin-bottom: 20px;
-                /* Simuliere die @page Ränder für die Vorschau. */
-                padding: 4.5cm 2.5cm 2.5cm 2.5cm; 
-            }
-            /* Footer im Screen-Modus sichtbar und rechtsbündig */
-            .page-footer {
-                position: relative; 
-                margin-top: 2rem;
-                text-align: right; 
-                padding-right: 0; /* Bereits im document-page padding enthalten */
-            }
+        /* ZWINGEND: Alles bis "Summa" bleibt auf Seite 1 */
+        .keep-together {
+            break-inside: avoid;
+            page-break-inside: avoid;
         }
     </style>
 </head>
-<body class="p-0 m-0">
+<body>
 
-    <!-- 
-        HAUPT-CONTAINER FÜR SEITE 1 
-    -->
-    <div class="document-page" id="page1">
-        
-        <!-- HEADER (Kopfzeile des Absenders) -->
-        <header class="w-full mb-3 header-content" style="font-size: 10pt;">
-            <p>
-                <span id="senderName">{{senderName}}</span> · 
-                <span id="senderStreet">{{senderStreet}}</span> · 
-                <span id="senderZipCity">{{senderZipCity}}</span>
-            </p>
-        </header>
-        
-        <!-- ADRESSE DES EMPFÄNGERS -->
-        <section class="ml-0 tight-spacing mt-3">
-            <p class="font-normal mb-1">Frau und Herrn</p>
-            <p class="font-normal" id="receiverName">{{empfaengerAnrede}} {{name}}</p>
-            <p id="receiverStreet">{{strasse}}</p>
-            <p id="receiverZipCity">{{plz}} {{ort}}</p>
-        </section>
+<!-- ==============================
+     SEITE 1
+================================ -->
+<div class="page">
+    <div class="content">
 
-        <!-- ORT, DATUM UND LEISTUNGSDATEN -->
-        <section class="mt-16 tight-spacing">
-            <div class="flex-row-data">
-                <span class="data-key" id="dateLocation">Karlsruhe, den {{datum}}</span>
-                <span class="data-value"></span>
-            </div>
-            <div class="flex-row-data">
-                <span class="data-key">Gz.: <span id="gzNumber">{{gzNumber}}</span></span>
-                <span class="data-value"></span>
-            </div>
-            <div class="flex-row-data">
-                <span class="data-key">UST-ID-Nr.: <span id="ustId">{{ustId}}</span>; ReNr.: <span id="reNr">{{rechnungsId}}</span></span>
-                <span class="data-value"></span>
-            </div>
-            <div class="flex-row-data">
-                <span class="data-key">Leistungszeit: <span id="servicePeriod">{{leistungszeit}}</span></span>
-                <span class="data-value"></span>
-            </div>
-        </section>
-        
-        <!-- TITEL UND IN SACHEN -->
-        <section class="mt-16 text-center">
-            <!-- Verwenden Sie 18pt für die Überschrift -->
-            <h1 class="font-bold mb-6" style="font-size: 18pt;">Kosten<span class="border-0 border-black">note</span></h1>
-            <p>
-                In Sachen
-            </p>
-            <!-- Leerzeile eingefügt, 12pt Höhe (entspricht 1 Zeilenhöhe) -->
-            <p style="height: 12pt;"></p> 
-            <p class="font-bold">
-                <span id="clientName1">{{mandant}}</span><br>
-                <span class="font-bold">./.</span><br>
-                <span id="clientName2">{{gegner}}</span>
-            </p>
-        </section>
-
-        <!-- GESAMTSTREITWERT-TABELLE (OBERER BLOCK) -->
-        <section class="mt-16">
-            <div class="flex-row-data">
-                <span class="data-key">Gesamtstreitwert:</span>
-                <span class="data-value" id="totalDisputeValue">{{formatCurrency gesamtStreitwert}} EUR</span>
-            </div>
-            <div class="flex-row-data">
-                <span class="data-key">Einzelstreitwert:</span>
-                <span class="data-value" id="singleDisputeValue">{{formatCurrency einzelStreitwert}} EUR</span>
-            </div>
-            <div class="flex-row-data">
-                <span class="data-key">Prozentualer Anteil am Gesamtstreitwert:</span>
-                <span class="data-value" id="percentageShare">{{formatCurrency prozentualerAnteil}} %</span>
-            </div>
-        </section>
-
-        <!-- GESAMTRECHNUNGSBETRAG AUS GESAMTSTREITWERT (UNTERER BLOCK MIT LINIE) -->
-        <section class="mt-8">
-            <div class="flex-row-data">
-                <span class="data-key" style="line-height: 1.1;">
-                    Gesamtrechnungsbetrag aus Gesamtstreitwert<br>
-                    <span style="font-size: 10pt; line-height: 1.1;">(2,3 Verfahrensgebühr nach Nr. 3508 VV RVG)</span><br>
-                    <span class="font-bold">zzgl. Auslagenpauschale nach Nr. 7002 VV RVG:</span>
-                </span>
-                <span class="data-value" id="totalBillingAmount">{{formatCurrency gesamtRechnungsbetrag}} EUR</span>
-            </div>
-            <div class="line-seperator w-full"></div>
-        </section>
-
-        <!-- EINZELRECHNUNGSBETRAG-TABELLE (UNTEN AUF SEITE 1) -->
-        <section class="mt-8">
-            <p class="font-bold mb-3">Einzelrechnungsbetrag:</p>
-            <div class="flex-row-data">
-                <span class="data-key" style="line-height: 1.1;">
-                    Prozentualer Anteil am Gesamtrechnungsbetrag<br>
-                    <span style="font-size: 10pt; line-height: 1.1;">(<span id="calcPercentage">{{formatCurrency prozentualerAnteil}} %</span> aus <span id="calcBase">{{formatCurrency gesamtRechnungsbetrag}} EUR</span> EUR):</span>
-                </span>
-                <span class="data-value" id="proportionalAmount">{{formatCurrency proportionalerBetrag}} EUR</span>
-            </div>
-            <div class="flex-row-data">
-                <span class="data-key">0,3-Erhöhungsgebühr nach Nr. 1008 VV RVG</span>
-                <span class="data-value" id="increaseFee">{{formatCurrency erhoehungsgebuehr}} EUR</span>
-            </div>
-        </section>
-        
-        <!-- FOOTER SEITE 1 (Ist leer, damit keine Seitenzahl erscheint) -->
-        <footer class="page-footer" id="page1Footer">
-             <!-- Leerer Footer, um keine Seitenzahl auf Seite 1 anzuzeigen -->
-        </footer>
-    </div>
-    
-    <!-- SEITENUMBRUCH-ELEMENT (Nur im Print-Modus wirksam) -->
-    <div id="pageBreak"></div>
-
-    <!-- 
-        HAUPT-CONTAINER FÜR SEITE 2 
-    -->
-    <div class="document-page" id="page2">
-        
-        <!-- HEADER (Kopfzeile des Absenders) WIEDERHOLUNG AUF SEITE 2 -->
-        <header class="w-full mb-3 header-content" style="font-size: 10pt;">
-            <p>
-                <span id="senderName">{{senderName}}</span> · 
-                <span id="senderStreet">{{senderStreet}}</span> · 
-                <span id="senderZipCity">{{senderZipCity}}</span>
-            </p>
+        <header style="font-size: 10pt; margin-bottom: 0.5rem;">
+            {{senderName}} · {{senderStreet}} · {{senderZipCity}}
         </header>
 
-        <!-- FORTGESETZTE EINZELRECHNUNGSBETRAG-TABELLE (OBEN AUF SEITE 2) -->
-        <section class="total-table mt-12">
-            
-            <!-- Fortsetzung der Berechnung von Seite 1 -->
-            <div class="flex-row-data">
-                <span class="data-key">aus <span id="increaseFeeCalcBase">{{formatCurrency einzelStreitwert}} EUR</span>:</span>
-                <span class="data-value" id="increaseFeeAmount">{{formatCurrency erhoehungsgebuehr}} EUR</span> 
-            </div>
-            
-            <!-- ZWISCHENSUMME -->
-            <div class="flex-row-data pt-3">
-                <span class="data-key">Zwischensumme:</span>
-                <span class="data-value" id="subTotal">{{formatCurrency gesamtbetragNetto}} EUR</span>
-            </div>
-            
-            <!-- UMSATZSTEUER -->
-            <div class="flex-row-data">
-                <span class="data-key">Umsatzsteuer (19% aus {{formatCurrency gesamtbetragNetto}}):</span>
-                <span class="data-value" id="vatAmount">{{formatCurrency mehrwertsteuer}} EUR</span>
-            </div>
-            
-            <!-- SUMME (Dicke Linie darunter) -->
-            <div class="flex-row-data pt-1">
-                <span class="data-key font-bold">Summa:</span>
-                <span class="data-value font-bold border-b-2 border-black pb-1">{{formatCurrency gesamtbetragBrutto}} EUR</span>
-            </div>
-            
+        <section class="tight-spacing">
+            <p>Frau und Herrn</p>
+            <p>{{empfaengerAnrede}} {{name}}</p>
+            <p>{{strasse}}</p>
+            <p>{{plz}} {{ort}}</p>
         </section>
 
-        <!-- ZAHLUNGSANWEISUNG -->
-        <section class="mt-16">
-            <p>
-                Bitte überweisen Sie den Betrag auf unser Konto bei der Commerzbank AG,<br>
-                IBAN: <span id="iban">{{iban}}</span>.
-            </p>
-            <!-- HINWEISZEILE: 10pt und in rot -->
-            <p class="text-red-600 mt-1" style="font-size: 10pt;">
-                Bitte beachten Sie die neue Bankverbindung
-            </p>
+        <section class="mt-6">
+            <div class="flex-row-data">
+                <span class="data-key">Karlsruhe, den {{datum}}</span>
+            </div>
+            <div class="flex-row-data">Gz.: {{gzNumber}}</div>
+            <div class="flex-row-data">UST-ID: {{ustId}}; ReNr.: {{rechnungsId}}</div>
+            <div class="flex-row-data">Leistungszeit: {{leistungszeit}}</div>
         </section>
 
-        <!-- UNTERSCHRIFT (Jetzt linksbündig) -->
-        <section class="mt-40">
-            <p class="mb-1">
-                ({{unterschrift}})<br>
-                Rechtsanwalt
-            </p>
-        </section>
-        
-        <!-- FOOTER SEITE 2 (Im Print-Modus sichtbar und rechtsbündig) -->
-        <footer class="page-footer" id="page2Footer">
-            <p>Seite 2 von 2</p>
-        </footer>
+        <!-- ALLES BIS SUMMA MUSS AUF SEITE 1 BLEIBEN -->
+        <div class="keep-together">
+
+            <section class="text-center mt-6">
+                <h1 style="font-size:18pt; font-weight:bold;">Kostennote</h1>
+                <p class="mt-3">In Sachen</p>
+                <p class="font-bold mt-2">{{mandant}}<br>./.<br>{{gegner}}</p>
+            </section>
+
+            <section class="mt-6">
+                <div class="flex-row-data">
+                    <span>Gesamtstreitwert:</span>
+                    <span class="data-value">{{formatCurrency gesamtStreitwert}} EUR</span>
+                </div>
+                <div class="flex-row-data">
+                    <span>Einzelstreitwert:</span>
+                    <span class="data-value">{{formatCurrency einzelStreitwert}} EUR</span>
+                </div>
+                <div class="flex-row-data">
+                    <span>Prozentualer Anteil:</span>
+                    <span class="data-value">{{formatCurrency prozentualerAnteil}} %</span>
+                </div>
+            </section>
+
+            <section class="mt-4">
+                <div class="flex-row-data">
+                    <span>
+                        Gesamtrechnungsbetrag<br>
+                        <span style="font-size:10pt;">(2,3 Verfahrensgebühr Nr. 3508 VV RVG)</span><br>
+                        <strong>zzgl. Auslagenpauschale:</strong>
+                    </span>
+                    <span class="data-value">{{formatCurrency gesamtRechnungsbetrag}} EUR</span>
+                </div>
+                <div class="line-seperator"></div>
+            </section>
+
+            <section class="mt-4">
+                <p class="font-bold">Einzelrechnungsbetrag:</p>
+                <div class="flex-row-data">
+                    <span>Prozentualer Anteil</span>
+                    <span class="data-value">{{formatCurrency proportionalerBetrag}} EUR</span>
+                </div>
+                <div class="flex-row-data">
+                    <span>0,3-Erhöhungsgebühr Nr. 1008 VV RVG</span>
+                    <span class="data-value">{{formatCurrency erhoehungsgebuehr}} EUR</span>
+                </div>
+            </section>
+
+            <section class="mt-6">
+                <div class="flex-row-data">
+                    <span>Zwischensumme:</span>
+                    <span class="data-value">{{formatCurrency gesamtbetragNetto}} EUR</span>
+                </div>
+                <div class="flex-row-data">
+                    <span>USt 19%:</span>
+                    <span class="data-value">{{formatCurrency mehrwertsteuer}} EUR</span>
+                </div>
+                <div class="flex-row-data font-bold">
+                    <span>Summa:</span>
+                    <span class="data-value">{{formatCurrency gesamtbetragBrutto}} EUR</span>
+                </div>
+            </section>
+
+        </div>
+
     </div>
-    
+
+    <!-- <div class="footer">
+        Seite 1 von 2
+    </div> -->
+</div>
+
+<!-- ==============================
+     SEITE 2
+================================ -->
+<div class="page">
+    <div class="content">
+        <!-- <header style="font-size:10pt; margin-bottom:1rem;">
+            {{senderName}} · {{senderStreet}} · {{senderZipCity}}
+        </header> -->
+
+        <section>
+            <p>Bitte überweisen Sie den Betrag auf unser Konto bei der Commerzbank AG,<br>
+            IBAN: {{iban}}</p>
+            <p style="font-size:10pt; color:red;">Bitte beachten Sie die neue Bankverbindung</p>
+        </section>
+
+        <section style="margin-top:5rem;">
+            ({{unterschrift}})<br>
+            Rechtsanwalt
+        </section>
+    </div>
+
+    <div class="footer">
+        Seite 2 von 2
+    </div>
+</div>
+
 </body>
 </html>

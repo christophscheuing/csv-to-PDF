@@ -5,15 +5,32 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "generate": "node index.js",
-    "process:all": "node index.js --all",
-    "process:single": "node index.js --id=001"
+    "build": "tsc",
+    "start": "npm run build && node dist/index.js",
+    "dev": "tsc --watch",
+    "generate": "npm run build && node dist/index.js",
+    "process:all": "npm run build && node dist/index.js --all",
+    "process:single": "npm run build && node dist/index.js --id=123/25",
+    "process:no-stamp": "npm run build && node dist/index.js --all --no-stamp"
   },
+  "keywords": [
+    "invoice",
+    "rvg",
+    "legal",
+    "pdf",
+    "generator",
+    "kostennote"
+  ],
+  "author": "",
+  "license": "MIT",
   "dependencies": {
     "csv-parser": "^3.0.0",
     "handlebars": "^4.7.8",
     "pdf-lib": "^1.17.1",
     "puppeteer": "^22.12.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.0"
   }
 }
