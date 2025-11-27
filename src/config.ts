@@ -26,7 +26,7 @@ export const senderInfo: SenderInfo = {
 };
 
 /**
- * Sender information - centralized configuration
+ * Case information - centralized configuration
  * Adjust these values according to your law firm
  */
 export const caseDetails: Partial<CaseDetails> = {
