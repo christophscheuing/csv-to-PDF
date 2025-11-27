@@ -1,0 +1,3 @@
+rechnungsId;datum;aktenzeichen;rechnungsnummer;klient;gegner;bghAz;empfaengerName;empfaengerStrasse;empfaengerOrt
+001;27. November 2025;MM 123/25;XX/25;Dipl.-Kfm. Peter u.a.;Dr. Hans u.a.;XX ZR XX/XX;Maximiliane Musterfrau und Max Mustermann;Musterstraße 123;12345 Musterstadt
+002;28. November 2025;XY 456/25;YY/25;Firma A GmbH;Herr Mustermann;YY ZR YY/YY;Lisa Schmidt;Hauptstraße 5;54321 Neustadt

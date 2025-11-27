@@ -1,0 +1,19 @@
+{
+  "name": "rvg-rechnungsgenerator",
+  "version": "1.0.0",
+  "description": "Automatische Generierung von RVG-Kostennote PDFs aus CSV-Daten.",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "generate": "node index.js",
+    "process:all": "node index.js --all",
+    "process:single": "node index.js --id=001"
+  },
+  "dependencies": {
+    "csv-parser": "^3.0.0",
+    "handlebars": "^4.7.8",
+    "pdf-lib": "^1.17.1",
+    "puppeteer": "^22.12.0"
+  }
+}
