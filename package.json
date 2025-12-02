@@ -10,8 +10,9 @@
     "dev": "tsc --watch",
     "generate": "npm run build && node dist/index.js",
     "process:all": "npm run build && node dist/index.js --all",
-    "process:single": "npm run build && node dist/index.js --id=123/25",
-    "process:no-stamp": "npm run build && node dist/index.js --all --no-stamp"
+    "process:single": "npm run build && node dist/index.js",
+    "process:no-stamp": "npm run build && node dist/index.js --all --no-stamp",
+    "update-signature": "node update-signature.cjs"
   },
   "keywords": [
     "invoice",

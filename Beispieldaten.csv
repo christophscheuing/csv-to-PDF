@@ -1,3 +1,4 @@
 ﻿Lf. Nr.;Az. TILP;Anrede;Vorname1;Nachname1;Anrede2;Vorname2;Nachname2;Strasse;PLZ;Ort;Land;Streitwert Klage;Gesamtstreitwert;Gesamtrechnungsbetrag;Anteil;Einzelrechnungsbetrag;Erhöhungsgebühr;Zwischensumme;Umsatzsteuer;Summa;Rechnungsnummer
 1;14;Herrn;Dr. Fritz;Mustermann;Frau;Heidi;Musterfrau;Musterstr. 66;12345;Musterstadt;D;50.000,00;48.647.579,99;373.618,20;0,102780%;384,0049187;383,7;767,7049187;145,8639346;913,5688533;123/25
 2;14;Herrn;Dr. Fritz;Mustermann;;;;Musterstr. 66;12345;Musterstadt;D;26.123,23;48.647.579,99;373.618,20;0,053699%;200,6289763;0;200,6289763;38,11950549;238,7484817;124/25
+3;14;Herrn;Dr. Fritz;Mustermann;;;;Musterstr. 66;12345;Musterstadt;D;26.123,23;48.647.579,99;373.618,20;0,053699%;200,6289763;0;200,6289763;38,11950549;238,7484817;128/25

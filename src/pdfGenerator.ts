@@ -48,6 +48,17 @@ export const registerHandlebarsHelpers = (): void => {
     Handlebars.registerHelper('eq', (a: any, b: any): boolean => {
         return a === b;
     });
+
+    /**
+     * Converts newlines to <br> tags for multi-line text
+     */
+    Handlebars.registerHelper('nl2br', function(text: string): Handlebars.SafeString {
+        if (!text || typeof text !== 'string') {
+            return new Handlebars.SafeString('');
+        }
+        const html = text.replace(/\n/g, '<br>');
+        return new Handlebars.SafeString(html);
+    });
 };
 
 /**
@@ -175,50 +186,56 @@ export const stampPDFOnBriefhead = async (
 
 /**
  * Saves the generated invoice PDF, optionally stamping it onto a briefhead PDF
- * 
+ *
  * @param generatedPdfBuffer - The generated invoice PDF
- * @param invoiceId - The ID for naming the output file
+ * @param invoiceData - Invoice data containing file naming information
  * @param shouldStamp - If true, the briefhead PDF is used for stamping
  * @returns Path to the saved file
  */
 export const savePDF = async (
     generatedPdfBuffer: Buffer,
-    invoiceId: string,
+    invoiceData: { lfNr: string; nachname1: string; nachname2?: string; rechnungsNummer: string },
     shouldStamp: boolean
 ): Promise<string> => {
     // Ensure output directory exists
     if (!fs.existsSync(config.outputDir)) {
         fs.mkdirSync(config.outputDir, { recursive: true });
     }
-    
-    const safeInvoiceId = invoiceId.replace('/', '_');
-    const outputPath = path.join(config.outputDir, `Rechnung_${safeInvoiceId}_final.pdf`);
-    
+
+    // Build filename: {LfNr}_{Nachname1}_{Nachname2}_final.pdf
+    const filenameParts = [invoiceData.lfNr, invoiceData.nachname1];
+    if (invoiceData.nachname2) {
+        filenameParts.push(invoiceData.nachname2);
+    }
+    filenameParts.push('final.pdf');
+    const filename = filenameParts.join('_');
+    const outputPath = path.join(config.outputDir, filename);
+
     // Check if stamping is requested
     if (!shouldStamp) {
-        console.log(`  ℹ Invoice ${invoiceId} will be saved WITHOUT briefhead: ${outputPath}`);
+        console.log(`  ℹ Invoice ${invoiceData.rechnungsNummer} will be saved WITHOUT briefhead: ${outputPath}`);
         fs.writeFileSync(outputPath, generatedPdfBuffer);
         return outputPath;
     }
-    
+
     // Check if briefhead PDF exists
     if (!fs.existsSync(config.briefheadPdf)) {
         console.warn(`  ⚠ Briefhead PDF (${config.briefheadPdf}) not found. Saving generated PDF directly.`);
         fs.writeFileSync(outputPath, generatedPdfBuffer);
         return outputPath;
     }
-    
+
     try {
         // Stamp the PDF on briefhead
         const stampedPdfBuffer = await stampPDFOnBriefhead(generatedPdfBuffer, config.briefheadPdf);
         fs.writeFileSync(outputPath, stampedPdfBuffer);
-        console.log(`  ✓ Invoice ${invoiceId} successfully generated and stamped: ${outputPath}`);
+        console.log(`  ✓ Invoice ${invoiceData.rechnungsNummer} successfully generated and stamped: ${outputPath}`);
     } catch (error) {
-        console.error(`  ✗ Error stamping PDF for ${invoiceId}:`, error);
+        console.error(`  ✗ Error stamping PDF for ${invoiceData.rechnungsNummer}:`, error);
         console.log(`  → Falling back to saving without stamp...`);
         fs.writeFileSync(outputPath, generatedPdfBuffer);
     }
-    
+
     return outputPath;
 };
 

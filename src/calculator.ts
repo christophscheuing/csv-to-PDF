@@ -163,7 +163,7 @@ export const calculateInvoiceData = (csvData: CSVRawData): InvoiceData => {
     const invoiceData: InvoiceData = {
         // Sender information
         ...senderInfo,
-        
+
         // Recipient information
         empfaengerAnrede: buildAnrede(csvData),
         name: buildRecipientName(csvData),
@@ -181,25 +181,31 @@ export const calculateInvoiceData = (csvData: CSVRawData): InvoiceData => {
         zwischensumme: zwischensumme,
         umsatzsteuer: umsatzsteuer,
         summa: summa,
-            
-        
+
+
         // Case details
         rechnungsNummer: csvData['Rechnungsnummer'],
         datum: formatGermanDate(),
-        gzNumber: caseDetails.gzNumber || '', // Adjust if you have a specific GZ number    
+        gzNumber: caseDetails.gzNumber || '', // Adjust if you have a specific GZ number
         leistungszeit: caseDetails.leistungszeit || '', // Adjust if you have a specific service period
         mandant: buildRecipientName(csvData), // Using recipient as client
         partei1: caseDetails.partei1 || '', // Add if available in your data
         partei2: caseDetails.partei2 || '', // Add if available in your data
-        
+
+        // File naming data
+        lfNr: csvData['Lf. Nr.'],
+        nachname1: csvData.Nachname1,
+        nachname2: csvData.Nachname2 || undefined,
+        hasSecondRecipient: !!(csvData.Vorname2 && csvData.Nachname2),
+
         // Dispute values
         ...disputeValue,
-        
+
         // Fee structure
         gebuehren,
         auslagen,
         barauslagen,
-        
+
         // Calculations
         ...calculations
     };

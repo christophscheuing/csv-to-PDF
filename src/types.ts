@@ -133,17 +133,20 @@ export interface ExcelCalculatedData {
 /**
  * Complete invoice data structure for template rendering
  */
-export interface InvoiceData extends 
-    SenderInfo, 
-    RecipientInfo, 
-    CaseDetails, 
-    DisputeValue, 
+export interface InvoiceData extends
+    SenderInfo,
+    RecipientInfo,
+    CaseDetails,
+    DisputeValue,
     ExcelCalculatedData,
     InvoiceCalculations {
     gebuehren: Fees;
     auslagen: Expenses;
     barauslagen: CashExpenses;
-
+    lfNr: string;
+    nachname1: string;
+    nachname2?: string;
+    hasSecondRecipient: boolean;
 }
 
 /**
@@ -163,6 +166,7 @@ export interface GeneratorConfig {
  */
 export interface ProcessingOptions {
     processAll: boolean;
-    targetId: string | null;
+    targetLfNr: string | null;
+    targetLfNrs: string[];
     shouldStamp: boolean;
 }

@@ -75,27 +75,33 @@ export const readCSV = (filePath: string, separator: string = ';'): Promise<CSVR
 
 /**
  * Builds the recipient's full name with proper German address format
- * 
+ *
  * @param data - Raw CSV data
- * @returns Formatted recipient name
+ * @returns Formatted recipient name (with line breaks for two recipients)
  */
 export const buildRecipientName = (data: CSVRawData): string => {
     const parts = [];
-    
+
     // First person
     if (data.Vorname1 && data.Nachname1) {
         const title1 = data.Vorname1.startsWith('Dr.') ? 'Dr.' : '';
         const firstName1 = data.Vorname1.replace('Dr.', '').trim();
         parts.push(`${title1} ${firstName1} ${data.Nachname1}`.trim());
     }
-    
+
     // Second person (if exists)
     if (data.Vorname2 && data.Nachname2) {
         const title2 = data.Vorname2.startsWith('Dr.') ? 'Dr.' : '';
         const firstName2 = data.Vorname2.replace('Dr.', '').trim();
         parts.push(`${title2} ${firstName2} ${data.Nachname2}`.trim());
     }
-    
+
+    // If two recipients: first name with "und" on first line, second name on new line
+    if (parts.length === 2) {
+        // return `${parts[0]} und\n${parts[1]}`;
+        return `${parts[0]} und ${parts[1]}`;
+    }
+
     return parts.join(' und ');
 };
 
