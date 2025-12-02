@@ -86,7 +86,8 @@ export const buildRecipientName = (data: CSVRawData): string => {
     if (data.Vorname1 && data.Nachname1) {
         const title1 = data.Vorname1.startsWith('Dr.') ? 'Dr.' : '';
         const firstName1 = data.Vorname1.replace('Dr.', '').trim();
-        parts.push(`${title1} ${firstName1} ${data.Nachname1}`.trim());
+        const nachname1 = (data.Nachname1.startsWith("c/o") ? '\n' : '') + data.Nachname1;
+        parts.push(`${title1} ${firstName1} ${nachname1}`.trim());
     }
 
     // Second person (if exists)
@@ -117,7 +118,7 @@ export const buildAnrede = (data: CSVRawData): string => {
     
     // If there are two recipients
     if (anrede1 && anrede2) {
-        return `${anrede2} und ${anrede1}`;
+        return `${anrede1} und ${anrede2}`;
     }
     
     // Single recipient

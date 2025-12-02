@@ -1,8 +1,8 @@
-import { 
-    CSVRawData, 
-    InvoiceData, 
-    Fees, 
-    Expenses, 
+import {
+    CSVRawData,
+    InvoiceData,
+    Fees,
+    Expenses,
     CashExpenses,
     InvoiceCalculations,
     DisputeValue
@@ -11,16 +11,39 @@ import { senderInfo, defaultCalculationValues, config, caseDetails } from './con
 import { parseGermanNumber, formatGermanDate, buildRecipientName, buildAnrede } from './csvParser.js';
 
 /**
+ * Maps country codes to full country names
+ * Returns null for Germany (D/DE) as it should not be displayed
+ *
+ * @param countryCode - The country code from CSV (D, DE, CH, AT, PT, BG, LU)
+ * @returns Full country name or null for Germany
+ */
+const getCountryName = (countryCode: string): string | null => {
+    const code = countryCode?.trim().toUpperCase();
+
+    const countryMap: { [key: string]: string | null } = {
+        'D': null,        // Deutschland - nicht anzeigen
+        'DE': null,       // Deutschland - nicht anzeigen
+        'CH': 'Schweiz',
+        'AT': 'Österreich',
+        'PT': 'Portugal',
+        'BG': 'Bulgarien',
+        'LU': 'Luxemburg'
+    };
+
+    return countryMap[code] ?? null;
+};
+
+/**
  * Calculates dispute values based on the case
  * You can customize this logic based on your specific needs
- * 
+ *
  * @param streitwertKlage - The dispute value from the lawsuit
  * @returns Calculated dispute values
  */
 const calculateDisputeValues = (streitwertKlage: number): DisputeValue => {
     // Example calculation - adjust based on your legal requirements
     const einzelStreitwert = streitwertKlage; // Can be different in some cases
-    
+
     return {
         einzelStreitwert,
     };
@@ -171,6 +194,7 @@ export const calculateInvoiceData = (csvData: CSVRawData): InvoiceData => {
         plz: csvData.PLZ,
         ort: csvData.Ort,
         land: csvData.Land,
+        landName: getCountryName(csvData.Land),
 
         // Data calculated by Excel
         gesamtStreitwert: gesamtStreitwert,

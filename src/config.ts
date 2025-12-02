@@ -4,7 +4,8 @@ import { CaseDetails, GeneratorConfig, SenderInfo } from './types.js';
  * Main configuration for the invoice generator
  */
 export const config: GeneratorConfig = {
-    inputCsv: 'beispieldaten.csv',
+    // inputCsv: 'beispieldaten.csv',
+    inputCsv: 'secret-data/liste1.csv',
     htmlTemplate: 'invoice_template.html',
     briefheadPdf: 'briefkopf.pdf',
     outputDir: 'output',

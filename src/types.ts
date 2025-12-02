@@ -52,6 +52,7 @@ export interface RecipientInfo {
     plz: string;
     ort: string;
     land: string;
+    landName: string | null;
 }
 
 /**

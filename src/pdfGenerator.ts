@@ -202,14 +202,13 @@ export const savePDF = async (
         fs.mkdirSync(config.outputDir, { recursive: true });
     }
 
-    // Build filename: {LfNr}_{Nachname1}_{Nachname2}_final.pdf
-    const filenameParts = [invoiceData.lfNr, invoiceData.nachname1];
+    // Build filename: {LfNr}_{Nachname1}_{Nachname2.pdf
+    const filenameParts = [invoiceData.lfNr, invoiceData.nachname1.replaceAll('/', '_')];
     if (invoiceData.nachname2) {
         filenameParts.push(invoiceData.nachname2);
     }
-    filenameParts.push('final.pdf');
-    const filename = filenameParts.join('_');
-    const outputPath = path.join(config.outputDir, filename);
+    const filename = filenameParts.join(' ');
+    const outputPath = path.join(config.outputDir, filename) + '.pdf';
 
     // Check if stamping is requested
     if (!shouldStamp) {

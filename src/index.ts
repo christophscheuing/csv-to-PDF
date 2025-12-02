@@ -185,8 +185,19 @@ const main = async (): Promise<void> => {
         console.log(`\n→ Reading CSV file: ${config.inputCsv}`);
         const csvData = await readCSV(config.inputCsv, config.csvSeparator);
 
+        // Filter out rows with empty Nachname1
+        const validCsvData = csvData.filter(row => {
+            const nachname = row['Nachname1']?.trim();
+            return nachname && nachname.length > 0;
+        });
+
+        const skippedCount = csvData.length - validCsvData.length;
+        if (skippedCount > 0) {
+            console.log(`  ⓘ Skipped ${skippedCount} row(s) with empty Nachname1`);
+        }
+
         // Convert CSV data to invoice data
-        const invoices = csvData.map(row => calculateInvoiceData(row));
+        const invoices = validCsvData.map(row => calculateInvoiceData(row));
         console.log(`✓ Processed ${invoices.length} invoice records\n`);
 
         // Filter invoices based on options

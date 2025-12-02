@@ -148,7 +148,7 @@ All file paths are centralized in `config.ts`. Default locations:
 - Letterhead PDF: `./briefkopf.pdf`
 - Output Directory: `./output/`
 
-Output files are named: `Rechnung_{invoiceId}_final.pdf` where `invoiceId` has `/` replaced with `_`.
+Output files are named: `Rechnung_{invoiceId}.pdf` where `invoiceId` has `/` replaced with `_`.
 
 ## TypeScript Compilation
 
