@@ -1,10 +1,3 @@
 ﻿Lf. Nr.;Az. TILP;Anrede;Vorname1;Nachname1;Anrede2;Vorname2;Nachname2;Strasse;PLZ;Ort;Land;Streitwert Klage;Gesamtstreitwert;Gesamtrechnungsbetrag;Anteil;Einzelrechnungsbetrag;Erhöhungsgebühr;Zwischensumme;Umsatzsteuer;Summa;Rechnungsnummer
 1;14;Herrn;Dr. Fritz;Mustermann;Frau;Heidi;Musterfrau;Musterstr. 66;12345;Musterstadt;D;50.000,00;48.647.579,99;373.618,20;0,102780%;384,0049187;383,7;767,7049187;145,8639346;913,5688533;123/25
 2;14;Herrn;Dr. Fritz;Mustermann;;;;Musterstr. 66;12345;Musterstadt;D;26.123,23;48.647.579,99;373.618,20;0,053699%;200,6289763;0;200,6289763;38,11950549;238,7484817;124/25
-16;665;Herrn;Marcus;Kazyszka;;;;Franz-von-Kempis-Weg 8;53332;Bornheim;D;13922,27;48.647.579,99;373.618,20;0,028619%;106,9244032;0;106,9244032;20,31563661;127,2400398;125/25
-17;750;Frau;Birgit;Bäuerle;Herrn;Dieter;Bäuerle;Stuttgarter Straße 12/2;71116;Gärtringen;D;3678,28;48.647.579,99;373.618,20;0,007561%;28,24955225;83,4;111,6495522;21,21341493;132,8629672;126/25
-4;119;Herrn;Joachim;Rossa;;;;Gerhart-Hauptmann-Allee 10a;17192;Waren (Müritz);D;92397,12;48.647.579,99;373.618,20;0,189932%;709,6189711;0;709,6189711;134,8276045;844,4465756;123/26
-5;120;Herrn;Dr. Leenhard;Hörauf;;;;Uhlandstr. 3;53879;Euskirchen;D;1589,56;48.647.579,99;373.618,20;0,003268%;12,20797717;0;12,20797717;2,319515663;14,52749283;124/26
-6;154;Herrn;Steffen;Hoffmann;;;;Im Brühl 21;66130;Saarbrücken;D;26179,564;48.647.579,99;373.618,20;0,053815%;201,0616269;0;201,0616269;38,20170911;239,263336;125/26
-7;167;Herrn;Önder;Sigan;;;;Illerstraße 46;90451;Nürnberg;D;69876,936;48.647.579,99;373.618,20;0,143639%;536,6617426;0;536,6617426;101,9657311;638,6274737;126/26
-8;248;Herrn;Sven;Hommel;;;;Rosenholzweg 18;04178;Leipzig;D;40865,17;48.647.579,99;373.618,20;0,084002%;313,8485257;0;313,8485257;59,63121988;373,4797456;123/27
