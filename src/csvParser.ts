@@ -97,10 +97,24 @@ export const buildRecipientName = (data: CSVRawData): string => {
         parts.push(`${title2} ${firstName2} ${data.Nachname2}`.trim());
     }
 
+    // Third person (if exists)
+    if (data.Vorname3 && data.Nachname3) {
+        const title3 = data.Vorname3.startsWith('Dr.') ? 'Dr.' : '';
+        const firstName3 = data.Vorname3.replace('Dr.', '').trim();
+        parts.push(`${title3} ${firstName3} ${data.Nachname3}`.trim());
+    }
+
     // If two recipients: first name with "und" on first line, second name on new line
     if (parts.length === 2) {
         // return `${parts[0]} und\n${parts[1]}`;
+        // console.log('ZWEI EMPFÄNGER');
         return `${parts[0]} und ${parts[1]}`;
+    }
+
+    // If three recipients: first name with "und" on first line, second name on new line
+    if (parts.length === 3) {
+        console.log('DREI EMPFÄNGER: ' + `${parts[0]}, ${parts[1]} und ${parts[2]}`)
+        return `${parts[0]}, ${parts[1]} und ${parts[2]}`;
     }
 
     return parts.join(' und ');
@@ -115,7 +129,13 @@ export const buildRecipientName = (data: CSVRawData): string => {
 export const buildAnrede = (data: CSVRawData): string => {
     const anrede1 = data.Anrede || '';
     const anrede2 = data.Anrede2 || '';
+    const anrede3 = data.Anrede3 || '';
     
+    // If there are three recipients
+    if (anrede1 && anrede2) {
+        return `${anrede1}, ${anrede2} und ${anrede3}`;
+    }
+
     // If there are two recipients
     if (anrede1 && anrede2) {
         return `${anrede1} und ${anrede2}`;

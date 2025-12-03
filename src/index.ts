@@ -215,7 +215,7 @@ const main = async (): Promise<void> => {
             if (invoicesToProcess.length === 0) {
                 console.error(`\n✗ ERROR: No invoices found matching specification "${options.targetLfNr}"\n`);
                 console.log('Available Lf. Nr.:');
-                invoices.forEach(inv => console.log(`  - "${inv.lfNr}" (${inv.nachname1}${inv.nachname2 ? ' & ' + inv.nachname2 : ''})`));
+                invoices.forEach(inv => console.log(`  - "${inv.lfNr}" (${inv.nachname1}${inv.nachname2 ? ' & ' + inv.nachname3 : ''}${inv.nachname3 ? ' & ' + inv.nachname3 : ''})`));
                 console.log('');
                 process.exit(1);
             }

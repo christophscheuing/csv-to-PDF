@@ -53,7 +53,7 @@ rvg-rechnungsgenerator/
 Ihre CSV-Datei (`beispieldaten.csv`) sollte folgende Spalten enthalten:
 
 ```csv
-Lf. Nr.;Az. TILP;Anrede;Vorname1;Nachname1;Anrede2;Vorname2;Nachname2;Strasse;PLZ;Ort;Land;Streitwert Klage;Rechnungsnummer
+Lf. Nr.;Az. TILP;Anrede;Vorname1;Nachname1;Anrede2;Vorname2;Nachname2;Anrede3;Vorname3;Nachname3;Strasse;PLZ;Ort;Land;Streitwert Klage;Rechnungsnummer
 1;14;Herrn;Dr. Fritz;Mustermann;Frau;Heidi;Musterfrau;Musterstr. 66;12345;Musterstadt;D;26.264,34;123/25
 ```
 
@@ -160,6 +160,8 @@ CSV → Parser → Calculator → Template → PDF → (Optional) Briefkopf → 
 ### Optionale Felder
 - `Vorname2`, `Nachname2`: Zweiter Empfänger (für Eheleute)
 - `Anrede`, `Anrede2`: Anrede (Herrn/Frau)
+- `Vorname3`, `Nachname3`: Dritter Empfänger
+- `Anrede`, `Anrede3`: Anrede (Herrn/Frau)
 - `Az. TILP`: Aktenzeichen
 
 ### Deutsche Zahlenformate

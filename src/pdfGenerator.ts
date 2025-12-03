@@ -194,7 +194,7 @@ export const stampPDFOnBriefhead = async (
  */
 export const savePDF = async (
     generatedPdfBuffer: Buffer,
-    invoiceData: { lfNr: string; nachname1: string; nachname2?: string; rechnungsNummer: string },
+    invoiceData: { lfNr: string; nachname1: string; nachname2?: string; nachname3?: string; rechnungsNummer: string },
     shouldStamp: boolean
 ): Promise<string> => {
     // Ensure output directory exists
@@ -206,6 +206,9 @@ export const savePDF = async (
     const filenameParts = [invoiceData.lfNr, invoiceData.nachname1.replaceAll('/', '_')];
     if (invoiceData.nachname2) {
         filenameParts.push(invoiceData.nachname2);
+    }
+    if (invoiceData.nachname3) {
+        filenameParts.push(invoiceData.nachname3);
     }
     const filename = filenameParts.join(' ');
     const outputPath = path.join(config.outputDir, filename) + '.pdf';

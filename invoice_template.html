@@ -165,7 +165,7 @@
                 </div>
                 {{#if erhoehungsgebuehr}}
                 <div class="flex-row-data">
-                    <span>0,3-Erhöhungsgebühr Nr. 1008 VV RVG<br>
+                    <span>{{#if hasThirdRecipient}}2 x {{/if}}0,3-Erhöhungsgebühr Nr. 1008 VV RVG<br>
                         <span>aus {{formatCurrency einzelStreitwert}} EUR</span>
                     </span>
                     <span class="data-value">{{formatCurrency erhoehungsgebuehr}} EUR</span>
@@ -199,8 +199,8 @@
 <div class="page">
     <div class="content">
         <section>
-            <p>Bitte überweisen Sie den Betrag auf unser Konto bei der Commerzbank AG,<br>
-            IBAN: {{iban}}.</p>
+            <p>Bitte überweisen Sie den Betrag auf unser Konto bei der Commerzbank AG:<br>
+            IBAN: {{iban}}</p>
             <p style="font-size:10pt; color:red;">Bitte beachten Sie die neue Bankverbindung.</p>
         </section>
 

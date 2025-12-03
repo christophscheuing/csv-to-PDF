@@ -220,7 +220,9 @@ export const calculateInvoiceData = (csvData: CSVRawData): InvoiceData => {
         lfNr: csvData['Lf. Nr.'],
         nachname1: csvData.Nachname1,
         nachname2: csvData.Nachname2 || undefined,
+        nachname3: csvData.Nachname3 || undefined,
         hasSecondRecipient: !!(csvData.Vorname2 && csvData.Nachname2),
+        hasThirdRecipient: !!(csvData.Vorname3 && csvData.Nachname3),
 
         // Dispute values
         ...disputeValue,

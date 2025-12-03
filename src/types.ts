@@ -14,6 +14,9 @@ export interface CSVRawData {
     'Anrede2': string;
     'Vorname2': string;
     'Nachname2': string;
+    'Anrede3': string;
+    'Vorname3': string;
+    'Nachname3': string;
     'Strasse': string;
     'PLZ': string;
     'Ort': string;
@@ -147,7 +150,9 @@ export interface InvoiceData extends
     lfNr: string;
     nachname1: string;
     nachname2?: string;
+    nachname3?: string;
     hasSecondRecipient: boolean;
+    hasThirdRecipient: boolean;
 }
 
 /**

@@ -5,7 +5,7 @@ import { CaseDetails, GeneratorConfig, SenderInfo } from './types.js';
  */
 export const config: GeneratorConfig = {
     // inputCsv: 'beispieldaten.csv',
-    inputCsv: 'secret-data/liste1.csv',
+    inputCsv: 'secret-data/Gesamtliste.csv',
     htmlTemplate: 'invoice_template.html',
     briefheadPdf: 'briefkopf.pdf',
     outputDir: 'output',
@@ -23,7 +23,7 @@ export const senderInfo: SenderInfo = {
     senderZipCity: '76131 Karlsruhe',
     ustId: 'DE455775429',
     iban: 'DE54 6604 0018 0366 0560 00',
-    unterschrift: 'Prof. Dr. Matthias Siegmann'
+    unterschrift: 'Prof. Dr. Siegmann'
 };
 
 /**
