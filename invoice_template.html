@@ -103,7 +103,7 @@
             {{senderName}} · {{senderStreet}} · {{senderZipCity}}
         </header>
 
-        <section class="tight-spacing mb-8">
+        <section class="tight-spacing mb-8" style="max-width: 10cm;">
             <p>{{empfaengerAnrede}}</p>
             <p>{{{nl2br name}}}</p>
             <p>{{strasse}}</p>
@@ -112,12 +112,12 @@
         </section>
 
         <section class="mt-4 tight-spacing">
-            <div class="flex-row-data">
+            <p>
                 <span class="data-key">Karlsruhe, den {{datum}}</span>
-            </div>
-            <div class="flex-row-data">Gz.: {{gzNumber}}</div>
-            <div class="flex-row-data">UST-ID: {{ustId}}; ReNr.: {{rechnungsNummer}}</div>
-            <div class="flex-row-data">Leistungszeit: {{leistungszeit}}</div>
+            </p>
+            <p>Gz.: {{gzNumber}}</p>
+            <p>UST-ID: {{ustId}}; ReNr.: {{rechnungsNummer}}</p>
+            <p>Leistungszeit: {{leistungszeit}}</p>
         </section>
 
         <div class="keep-together">
@@ -128,10 +128,10 @@
                 <p class="mt-3" style="font-weight:550">{{partei1}}<br>./.<br>{{partei2}}</p>
             </section>
 
-            <section class="{{#unless hasSecondRecipient}}mt-12{{else}}mt-6{{/unless}}">
+            <section class="{{#unless hasSecondRecipient}}mt-10{{else}}mt-6{{/unless}}">
                 <div class="flex-row-data">
                     <span>Gesamtstreitwert:</span>
-                    <span class="data-value">{{formatCurrency gesamtStreitwert}} EUR</span>
+                    <span class="data-value">{{formatCurrency gesamtStreitwertAusConfig}} EUR</span>
                 </div>
                 <div class="flex-row-data">
                     <span>Einzelstreitwert:</span>
@@ -147,10 +147,10 @@
                 <div class="flex-row-data">
                     <span>
                         Gesamtrechnungsbetrag<br>
-                        <span>(2,3 Verfahrensgebühr Nr. 3508 VV RVG)</span><br>
-                        zzgl. Auslagenpauschale:
+                        <span>(2,3 Verfahrensgebühr Nr. 3508 VV RVG</span><br>
+                        zzgl. Auslagenpauschale:)
                     </span>
-                    <span class="data-value">{{formatCurrency gesamtRechnungsbetrag}} EUR</span>
+                    <span class="data-value">{{formatCurrency gesamtRechnungsbetragAusConfig}} EUR</span>
                 </div>
                 <div class="line-seperator"></div>
             </section>
@@ -159,13 +159,14 @@
                 <p>Einzelrechnungsbetrag:</p>
                 <div class="flex-row-data">
                     <span>Prozentualer Anteil am Gesamtrechnungsbetrag<br>
-                        <span>({{formatPercent anteil}} % aus {{formatCurrency gesamtRechnungsbetrag}} EUR)</span>
+                        <span>({{formatPercent anteil}} % aus {{formatCurrency gesamtRechnungsbetragAusConfig}} EUR)</span>
                     </span>
                     <span class="data-value">{{formatCurrency einzelRechnungsbetrag}} EUR</span>
                 </div>
                 {{#if erhoehungsgebuehr}}
                 <div class="flex-row-data">
-                    <span>{{#if hasThirdRecipient}}2 x {{/if}}0,3-Erhöhungsgebühr Nr. 1008 VV RVG<br>
+                    <span>{{#if hasThirdRecipient}}2 x {{/if}}{{#if ErbengemeinschaftZahlWeitereMitglieder}}{{ErbengemeinschaftZahlWeitereMitglieder}} x {{/if}}0,3-Erhöhungsgebühr Nr. 1008 VV RVG<br>
+                        {{#if ErbengemeinschaftZahlWeitereMitglieder}}(weitere Miterben: {{ErbengemeinschaftNamenWeitereMitglieder}})<br>{{/if}}
                         <span>aus {{formatCurrency einzelStreitwert}} EUR</span>
                     </span>
                     <span class="data-value">{{formatCurrency erhoehungsgebuehr}} EUR</span>
@@ -199,7 +200,7 @@
 <div class="page">
     <div class="content">
         <section>
-            <p>Bitte überweisen Sie den Betrag auf unser Konto bei der Commerzbank AG:<br>
+            <p>Bitte überweisen Sie den Betrag auf unser Konto bei der Commerzbank AG mit der<br>
             IBAN: {{iban}}</p>
             <p style="font-size:10pt; color:red;">Bitte beachten Sie die neue Bankverbindung.</p>
         </section>

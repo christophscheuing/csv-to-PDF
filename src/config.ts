@@ -23,7 +23,9 @@ export const senderInfo: SenderInfo = {
     senderZipCity: '76131 Karlsruhe',
     ustId: 'DE455775429',
     iban: 'DE54 6604 0018 0366 0560 00',
-    unterschrift: 'Prof. Dr. Siegmann'
+    unterschrift: 'Prof. Dr. Siegmann',
+    gesamtStreitwertAusConfig: '48.647.580,34',
+    gesamtRechnungsbetragAusConfig: '373.618,20'
 };
 
 /**

@@ -83,9 +83,10 @@ export const buildRecipientName = (data: CSVRawData): string => {
     const parts = [];
 
     // First person
-    if (data.Vorname1 && data.Nachname1) {
-        const title1 = data.Vorname1.startsWith('Dr.') ? 'Dr.' : '';
-        const firstName1 = data.Vorname1.replace('Dr.', '').trim();
+    if (data.Nachname1) {
+        const vorname1 = data.Vorname1 || '';
+        const title1 = vorname1.startsWith('Dr.') ? 'Dr.' : '';
+        const firstName1 = vorname1.replace('Dr.', '').trim();
         const nachname1 = (data.Nachname1.startsWith("c/o") ? '\n' : '') + data.Nachname1;
         parts.push(`${title1} ${firstName1} ${nachname1}`.trim());
     }
@@ -113,7 +114,6 @@ export const buildRecipientName = (data: CSVRawData): string => {
 
     // If three recipients: first name with "und" on first line, second name on new line
     if (parts.length === 3) {
-        console.log('DREI EMPFÄNGER: ' + `${parts[0]}, ${parts[1]} und ${parts[2]}`)
         return `${parts[0]}, ${parts[1]} und ${parts[2]}`;
     }
 
@@ -132,7 +132,7 @@ export const buildAnrede = (data: CSVRawData): string => {
     const anrede3 = data.Anrede3 || '';
     
     // If there are three recipients
-    if (anrede1 && anrede2) {
+    if (anrede1 && anrede2 && anrede3) {
         return `${anrede1}, ${anrede2} und ${anrede3}`;
     }
 

@@ -221,6 +221,8 @@ export const calculateInvoiceData = (csvData: CSVRawData): InvoiceData => {
         nachname1: csvData.Nachname1,
         nachname2: csvData.Nachname2 || undefined,
         nachname3: csvData.Nachname3 || undefined,
+        ErbengemeinschaftZahlWeitereMitglieder: csvData['Erbengemeinschaft Zahl weitere Mietglieder'] || undefined,
+        ErbengemeinschaftNamenWeitereMitglieder: csvData['Erbengemeinschaft Namen weitere Mitglieder'] || undefined,
         hasSecondRecipient: !!(csvData.Vorname2 && csvData.Nachname2),
         hasThirdRecipient: !!(csvData.Vorname3 && csvData.Nachname3),
 

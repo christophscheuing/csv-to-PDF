@@ -17,6 +17,8 @@ export interface CSVRawData {
     'Anrede3': string;
     'Vorname3': string;
     'Nachname3': string;
+    'Erbengemeinschaft Zahl weitere Mietglieder': string;
+    'Erbengemeinschaft Namen weitere Mitglieder': string;
     'Strasse': string;
     'PLZ': string;
     'Ort': string;
@@ -43,6 +45,8 @@ export interface SenderInfo {
     ustId: string;
     iban: string;
     unterschrift: string;
+    gesamtStreitwertAusConfig: string;
+    gesamtRechnungsbetragAusConfig: string;
 }
 
 /**
@@ -151,6 +155,8 @@ export interface InvoiceData extends
     nachname1: string;
     nachname2?: string;
     nachname3?: string;
+    ErbengemeinschaftZahlWeitereMitglieder?: string;
+    ErbengemeinschaftNamenWeitereMitglieder?: string;
     hasSecondRecipient: boolean;
     hasThirdRecipient: boolean;
 }

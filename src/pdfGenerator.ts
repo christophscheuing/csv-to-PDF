@@ -27,8 +27,8 @@ export const registerHandlebarsHelpers = (): void => {
     Handlebars.registerHelper('formatPercent', (amount: any): string => {
         if (typeof amount !== 'number') return String(amount);
         return new Intl.NumberFormat('de-DE', { 
-            // minimumFractionDigits: 2, 
-            maximumFractionDigits: 6 
+            minimumFractionDigits: 8, 
+            maximumFractionDigits: 8 
         }).format(amount);
     });
     
