@@ -6,12 +6,10 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "start": "npm run build && node dist/index.js",
+    "start": "tsc && node dist/index.js",
     "dev": "tsc --watch",
-    "generate": "npm run build && node dist/index.js",
-    "process:all": "npm run build && node dist/index.js --all",
-    "process:single": "npm run build && node dist/index.js",
-    "process:no-stamp": "npm run build && node dist/index.js --all --no-stamp",
+    "process:all": "tsc && node dist/index.js --all",
+    "process:no-stamp": "tsc && node dist/index.js --all --no-stamp",
     "update-signature": "node update-signature.cjs"
   },
   "keywords": [

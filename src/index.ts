@@ -2,14 +2,15 @@
 
 /**
  * RVG Invoice Generator
- * 
+ *
  * Generates legal invoices (Kostennoten) from CSV data according to RVG
  * (Rechtsanwaltsvergütungsgesetz)
- * 
+ *
  * Usage:
- *   npm run process:all              - Process all invoices
- *   npm run process:single --id=123  - Process single invoice by ID
- *   npm run process:all --no-stamp   - Generate without briefhead
+ *   bun run process:all              - Process all invoices
+ *   bun run start --lf=1             - Process single invoice by Lf. Nr.
+ *   bun run start --lf=1-5           - Process range of invoices
+ *   bun run process:no-stamp         - Generate all without briefhead
  */
 
 import { config } from './config.js';
@@ -96,18 +97,18 @@ const showUsage = (): void => {
     console.log('╚════════════════════════════════════════════════════════════════╝\n');
     console.log('Please specify a processing mode:\n');
     console.log('  Process ALL invoices:');
-    console.log('    npm run process:all\n');
+    console.log('    bun run process:all\n');
     console.log('  Process invoice(s) by running number (Lf. Nr.):');
-    console.log('    npm run process:single --lf=1          # Single invoice');
-    console.log('    npm run process:single --lf=1,3,5      # Multiple invoices');
-    console.log('    npm run process:single --lf=1-3        # Range of invoices');
-    console.log('    npm run process:single --lf=1,3-5,7    # Combined\n');
+    console.log('    bun run start --lf=1          # Single invoice');
+    console.log('    bun run start --lf=1,3,5      # Multiple invoices');
+    console.log('    bun run start --lf=1-3        # Range of invoices');
+    console.log('    bun run start --lf=1,3-5,7    # Combined\n');
     console.log('Options:');
     console.log('  --no-stamp    Generate PDFs WITHOUT stamping on briefhead\n');
     console.log('Examples:');
-    console.log('  npm run process:all --no-stamp');
-    console.log('  npm run process:single --lf=1-10');
-    console.log('  npm run process:single --lf=2,5,8 --no-stamp\n');
+    console.log('  bun run process:no-stamp');
+    console.log('  bun run start --lf=1-10');
+    console.log('  bun run start --lf=2,5,8 --no-stamp\n');
 };
 
 /**

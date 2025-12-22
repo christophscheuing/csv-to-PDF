@@ -18,13 +18,22 @@ bun start                     # Build and run with default behavior
 ### Generate Invoices
 ```bash
 bun run process:all           # Process all invoices in CSV file
-bun run process:single        # Process single invoice (requires --id flag)
 bun run process:no-stamp      # Generate all without letterhead stamping
+
+# For specific invoices by Lf. Nr., use bun run start:
+bun run start --lf=1          # Process single invoice (Lf. Nr. 1)
+bun run start --lf=1,3,5      # Process multiple invoices
+bun run start --lf=1-5        # Process range of invoices
+bun run start --lf=1-3,7 --no-stamp  # Combined with options
 ```
 
 ### Command Line Arguments
 - `--all`: Process all invoices in CSV
-- `--id=<invoice_number>`: Process specific invoice (e.g., `--id=123/25`)
+- `--lf=<specification>`: Process specific invoice(s) by Lf. Nr.
+  - Single: `--lf=1`
+  - Multiple: `--lf=1,3,5`
+  - Range: `--lf=1-5`
+  - Combined: `--lf=1,3-5,7`
 - `--no-stamp`: Skip letterhead PDF stamping
 
 ## Architecture
