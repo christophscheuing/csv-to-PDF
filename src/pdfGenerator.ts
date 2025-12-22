@@ -231,7 +231,7 @@ export const savePDF = async (
     }
     // Add Az. TILP to filename if configured and available
     if (filenameConfig.includeAzTilpInFilename && invoiceData.azTilp) {
-        filenameParts.push("WCA-"+invoiceData.azTilp);
+        filenameParts.push("WCA_"+invoiceData.azTilp);
     }
     const filename = filenameParts.join(' ');
     const outputPath = path.join(config.outputDir, filename) + '.pdf';

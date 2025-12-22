@@ -4,10 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kostennote PDF – korrigierter Seitenumbruch</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Mukta+Mahee:wght@400;500;600;700&display=block" rel="stylesheet">
-    
+
     <script>
         tailwind.config = {
             theme: {
@@ -19,9 +16,17 @@
             }
         }
     </script>
-    
+
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        /* Lokale Mukta Mahee Font-Einbindung für korrektes PDF-Rendering */
+        @font-face {
+            font-family: 'Mukta Mahee';
+            src: url('./MuktaMahee-Regular.ttf') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+        }
+
         @page {
             size: A4;
             margin: 0;
@@ -30,6 +35,8 @@
         html, body {
             margin: 0;
             padding: 0;
+            text-rendering: geometricPrecision;
+            font-feature-settings: "liga" 0;
         }
 
         /* ================================
@@ -93,7 +100,6 @@
             page-break-inside: avoid;
         }
 
-        /* Keine spezielle Klasse mehr nötig - Standard Mukta Mahee */
     </style>
 </head>
 <body>
@@ -117,7 +123,7 @@
             <p>
                 <span class="data-key">Karlsruhe, den {{datum}}</span>
             </p>
-            <p>Gz.: {{gzNumber}}{{#if azTilp}}; WCA-{{azTilp}}{{/if}}</p>
+            <p>Gz.: {{gzNumber}}{{#if azTilp}}; WCA_{{azTilp}}{{/if}}</p>
             <p>UST-ID: {{ustId}}; ReNr.: {{rechnungsNummer}}</p>
             <p>Leistungszeit: {{leistungszeit}}</p>
         </section>
