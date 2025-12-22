@@ -69,6 +69,7 @@ export interface CaseDetails {
     rechnungsNummer: string;
     datum: string;
     gzNumber: string;
+    azTilp?: string;
     leistungszeit: string;
     mandant: string;
     partei1: string;

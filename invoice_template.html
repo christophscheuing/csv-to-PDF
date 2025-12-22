@@ -6,7 +6,7 @@
     <title>Kostennote PDF – korrigierter Seitenumbruch</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Mukta+Mahee:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Mukta+Mahee:wght@400;500;600;700&display=block" rel="stylesheet">
     
     <script>
         tailwind.config = {
@@ -92,6 +92,8 @@
             break-inside: avoid;
             page-break-inside: avoid;
         }
+
+        /* Keine spezielle Klasse mehr nötig - Standard Mukta Mahee */
     </style>
 </head>
 <body>
@@ -115,8 +117,8 @@
             <p>
                 <span class="data-key">Karlsruhe, den {{datum}}</span>
             </p>
-            <p>Gz.: {{gzNumber}}</p>
-            <p>UST-ID: {{ustId}}; ReNr.: {{rechnungsNummer}}/</p>
+            <p>Gz.: {{gzNumber}}{{#if azTilp}}; WCA-{{azTilp}}{{/if}}</p>
+            <p>UST-ID: {{ustId}}; ReNr.: {{rechnungsNummer}}</p>
             <p>Leistungszeit: {{leistungszeit}}</p>
         </section>
 

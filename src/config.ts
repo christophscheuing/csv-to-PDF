@@ -14,6 +14,14 @@ export const config: GeneratorConfig = {
 };
 
 /**
+ * Output filename configuration
+ * Set includeAzTilpInFilename to true to include Az. TILP in the output filename
+ */
+export const filenameConfig = {
+    includeAzTilpInFilename: true // Set to true to include Az. TILP in output filename
+};
+
+/**
  * Sender information - centralized configuration
  * Adjust these values according to your law firm
  */

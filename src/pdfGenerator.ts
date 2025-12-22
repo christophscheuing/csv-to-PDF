@@ -4,7 +4,7 @@ import Handlebars from 'handlebars';
 import puppeteer from 'puppeteer';
 import { PDFDocument } from 'pdf-lib';
 import { InvoiceData } from './types.js';
-import { config } from './config.js';
+import { config, filenameConfig } from './config.js';
 
 /**
  * Registers custom Handlebars helpers for template rendering
@@ -59,6 +59,19 @@ export const registerHandlebarsHelpers = (): void => {
         const html = text.replace(/\n/g, '<br>');
         return new Handlebars.SafeString(html);
     });
+
+    /**
+     * Fixes underscore positioning without changing font
+     * Uses CSS to adjust vertical alignment
+     */
+    Handlebars.registerHelper('fixUnderscore', function(text: string): Handlebars.SafeString {
+        if (!text || typeof text !== 'string') {
+            return new Handlebars.SafeString('');
+        }
+        // Wrap underscores with vertical-align fix
+        const html = text.replace(/_/g, '<span style="position: relative; top: 0.15em;">_</span>');
+        return new Handlebars.SafeString(html);
+    });
 };
 
 /**
@@ -89,13 +102,19 @@ export const generatePDF = async (
         });
         
         const page = await browser.newPage();
-        
+
         // Set content and wait for it to be fully rendered
-        await page.setContent(html, { 
-            waitUntil: 'networkidle0', 
-            timeout: 30000 
+        await page.setContent(html, {
+            waitUntil: 'networkidle0',
+            timeout: 30000
         });
-        
+
+        // Wait for fonts to load completely
+        await page.evaluateHandle('document.fonts.ready');
+
+        // Additional short wait to ensure all fonts are applied
+        await new Promise(resolve => setTimeout(resolve, 500));
+
         console.log(`  → Generating PDF...`);
         
         // Generate PDF with A4 format
@@ -194,7 +213,7 @@ export const stampPDFOnBriefhead = async (
  */
 export const savePDF = async (
     generatedPdfBuffer: Buffer,
-    invoiceData: { lfNr: string; nachname1: string; nachname2?: string; nachname3?: string; rechnungsNummer: string },
+    invoiceData: { lfNr: string; nachname1: string; nachname2?: string; nachname3?: string; rechnungsNummer: string; azTilp?: string },
     shouldStamp: boolean
 ): Promise<string> => {
     // Ensure output directory exists
@@ -202,13 +221,17 @@ export const savePDF = async (
         fs.mkdirSync(config.outputDir, { recursive: true });
     }
 
-    // Build filename: {LfNr}_{Nachname1}_{Nachname2.pdf
+    // Build filename: {LfNr}_{Nachname1}_{Nachname2}_{AzTilp}.pdf (if configured)
     const filenameParts = [invoiceData.lfNr, invoiceData.nachname1.replaceAll('/', '_')];
     if (invoiceData.nachname2) {
         filenameParts.push(invoiceData.nachname2);
     }
     if (invoiceData.nachname3) {
         filenameParts.push(invoiceData.nachname3);
+    }
+    // Add Az. TILP to filename if configured and available
+    if (filenameConfig.includeAzTilpInFilename && invoiceData.azTilp) {
+        filenameParts.push("WCA-"+invoiceData.azTilp);
     }
     const filename = filenameParts.join(' ');
     const outputPath = path.join(config.outputDir, filename) + '.pdf';
