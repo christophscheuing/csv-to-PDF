@@ -41,8 +41,8 @@ export const senderInfo: SenderInfo = {
  * Adjust these values according to your law firm
  */
 export const caseDetails: Partial<CaseDetails> = {
-    leistungszeit: '06.03.-25.11.2025',
-    gzNumber: 'SH 072/25',
+    leistungszeit: '06.03.2025-02.01.2026',
+    gzNumber: '072/25',
     partei1: 'Dipl.-Kfm. Ebert u.a.',
     partei2: 'Dr. Braun u.a.',
 };

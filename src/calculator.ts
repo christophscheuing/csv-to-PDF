@@ -208,8 +208,8 @@ export const calculateInvoiceData = (csvData: CSVRawData): InvoiceData => {
 
 
         // Case details
-        rechnungsNummer: csvData['Rechnungsnummer'].padStart(4, '0') + '/25',
-        datum: formatGermanDate(),
+        rechnungsNummer: csvData['Rechnungsnummer'].padStart(4, '0') + '/26',
+        datum: '2. Januar 2026', // formatGermanDate(),
         gzNumber: caseDetails.gzNumber || '', // Adjust if you have a specific GZ number
         azTilp: csvData['Az. TILP'] || undefined,
         leistungszeit: caseDetails.leistungszeit || '', // Adjust if you have a specific service period
